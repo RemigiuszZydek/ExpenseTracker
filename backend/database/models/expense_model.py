@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime,Date
 from sqlalchemy.sql import func
 from ..database import Base
 
+#SQLalchemy model for "expenses" table
 class ExpenseModel(Base):
     __tablename__ = "expenses"
 

@@ -3,16 +3,21 @@ import sqlalchemy
 from sqlalchemy.orm import declarative_base 
 import os
 
+#SQLite database URL
 SQLALCHEMY_DATABASE_URL = "sqlite:///./expenses.db"
 
+#Create the database engine
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
 
+#Base class for SQLalchemy models
 Base = declarative_base()
 
+#Metadata object (can be used for additional table configuration)
 metadata = sqlalchemy.MetaData()
 
+# Database init if database doesn't exists
 def init_db():
     DB_PATH = "./expenses.db"
 
