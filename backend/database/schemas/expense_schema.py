@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import date, datetime
 
 # Pydantic schemas for expenses.
 # - Used for validating incoming data (POST)
@@ -15,7 +15,7 @@ class ExpenseCreate(ExpenseSchema):
 
 class ExpenseRead(ExpenseSchema):
     id: int
-    created_at : date
+    created_at : datetime
 
     class Config:
         from_attributes = True      # Allows reading data from ORM models
