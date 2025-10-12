@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from math import exp
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from backend.database.database import engine, Base, SessionLocal, get_db_session
 from backend.database.models.expense_model import ExpenseModel
@@ -32,3 +33,32 @@ def get_expense(db: Session=Depends(get_db_session)):
     expenses = db.query(ExpenseModel).all()
     return expenses
 
+
+
+@router.delete("/{expense_id}", response_model=ExpenseRead)
+def delete_expense(expense_id: int, db: Session=Depends(get_db_session)):
+    # Delete expense by id
+    db_expense = db.query(ExpenseModel).filter(ExpenseModel.id == expense_id).first()
+    
+    if not db_expense:
+        raise HTTPException(status_code=404, detail="Expense not found")
+    
+    db.delete(db_expense)
+    db.commit()
+
+    return {"message": f"Expense with id {expense_id} deleted successfully"}
+    
+
+@router.put("/{expense_id}",response_model=ExpenseRead)
+def update_expense(expense_id: int, updated_expense: ExpenseCreate, db: Session = Depends(get_db_session)):
+    db_expense = db.query(ExpenseModel).filter(ExpenseModel.id == expense_id).first()
+    # Find expense by ID
+    if not db_expense:
+        raise HTTPException(status_code=404, detail="Expense not found")
+    # Update each field
+    for key,value in updated_expense.dict().items():
+        setattr(db_expense,key,value)
+
+    db.commit()
+    db.refresh(db_expense)
+    return db_expense
