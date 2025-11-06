@@ -1,6 +1,7 @@
 from typing import Optional
 from datetime import date
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from backend.database.models.expense_model import ExpenseModel
 from backend.database.schemas.expense_schema import ExpenseCreate
 
@@ -55,3 +56,39 @@ class ExpenseService:
         if max_amount:
             query = query.filter(ExpenseModel.amount <= max_amount)
         return query.all()
+    
+    def get_stats(self, start_date: Optional[date] = None, end_date: Optional[date] = None):
+        """Returns sum, average by categories"""
+        query = self.db.query(ExpenseModel)
+
+        if start_date:
+            query = query.filter(ExpenseModel.date >= start_date)
+        if end_date:
+            query = query.filter(ExpenseModel.date <= end_date)
+
+        total = self.db.query(func.sum(ExpenseModel.amount)).scalar() or 0.0
+
+        if not start_date or not end_date:
+            first_date = self.db.query(func.min(ExpenseModel.date)).scalar()
+            last_date = self.db.query(func.max(ExpenseModel.date)).scalar()
+        else:
+            first_date, last_date = start_date, end_date
+
+        if first_date and last_date:
+            days = (last_date - first_date).days + 1
+            average_per_day = total / days if days > 0 else 0
+        else:
+            average_per_day = 0
+
+        by_category_query = (
+            self.db.query(ExpenseModel.category, func.sum(ExpenseModel.amount))
+            .group_by(ExpenseModel.category)
+            .all()
+        )
+        by_category = {cat: float(amount) for cat, amount in by_category_query}
+
+        return {
+            "total": float(total),
+            "average_per_day": round(average_per_day, 2),
+            "by_category": by_category
+        }

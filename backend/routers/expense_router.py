@@ -54,3 +54,12 @@ def get_filtered_expenses(
         max_amount=max_amount,
         category=category
     )
+
+@router.get("/stats")
+def get_expense_stats(
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    db: Session = Depends(get_db_session)
+):
+    expense_service = ExpenseService(db)
+    return expense_service.get_stats(start_date,end_date)
