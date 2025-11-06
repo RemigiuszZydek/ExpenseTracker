@@ -1,5 +1,6 @@
-from math import exp
-from fastapi import APIRouter, Depends, HTTPException
+from datetime import date
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from backend.database.database import engine, Base, SessionLocal, get_db_session
 from backend.database.models.expense_model import ExpenseModel
@@ -23,23 +24,33 @@ def create_expense(expense: ExpenseCreate, db: Session=Depends(get_db_session)):
 
 @router.get("/",response_model=list[ExpenseRead])
 def get_expense(db: Session=Depends(get_db_session)):
-    expenses = db.query(ExpenseModel).all()
-    return expenses
-
-
+    expense_service = ExpenseService(db)
+    return expense_service.get_all_expenses()
 
 @router.delete("/{expense_id}", response_model=ExpenseRead)
 def delete_expense(expense_id: int, db: Session=Depends(get_db_session)):
-    # Delete expense by id
-    db_expense = db.query(ExpenseModel).filter(ExpenseModel.id == expense_id).first()
-    if not db_expense:
-        raise HTTPException(status_code=404, detail="Expense not found")
-    db.delete(db_expense)
-    db.commit()
-    return {"message": f"Expense with id {expense_id} deleted successfully"}
+    expense_service = ExpenseService(db)
+    return expense_service.delete_expense(expense_id)
     
-
 @router.put("/{expense_id}",response_model=ExpenseRead)
 def update_expense(expense_id: int, updated_expense: ExpenseCreate, db: Session = Depends(get_db_session)):
     expense_service = ExpenseService(db)
     return expense_service.update_expense(expense_id, updated_expense)
+
+@router.get("/filter", response_model=list[ExpenseRead])
+def get_filtered_expenses(
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    min_amount: Optional[float] = Query(None),
+    max_amount: Optional[float] = Query(None),
+    category: Optional[str] = Query(None),
+    db: Session = Depends(get_db_session)
+):
+    expense_service = ExpenseService(db)
+    return expense_service.get_filtered_expenses(
+        start_date=start_date,
+        end_date=end_date,
+        min_amount=min_amount,
+        max_amount=max_amount,
+        category=category
+    )

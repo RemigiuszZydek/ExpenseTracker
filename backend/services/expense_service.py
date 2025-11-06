@@ -1,3 +1,5 @@
+from typing import Optional
+from datetime import date
 from sqlalchemy.orm import Session
 from backend.database.models.expense_model import ExpenseModel
 from backend.database.schemas.expense_schema import ExpenseCreate
@@ -34,3 +36,22 @@ class ExpenseService:
         self.db.refresh(expense)
         return expense
     
+    def get_filtered_expenses(self,
+                              start_date: Optional[date] = None,
+                              end_date: Optional[date] = None,
+                              category: Optional[str] = None,
+                              min_amount: Optional[float] = None,
+                              max_amount: Optional[float] = None) -> list[ExpenseModel]:
+        """Gives back filtered list of expenses"""
+        query = self.db.query(ExpenseModel)
+        if start_date:
+            query = query.filter(ExpenseModel.date >= start_date)
+        if end_date:
+            query = query.filter(ExpenseModel.date <= end_date)
+        if category:
+            query = query.filter(ExpenseModel.category == category)
+        if min_amount:
+            query = query.filter(ExpenseModel.amount >= min_amount)
+        if max_amount:
+            query = query.filter(ExpenseModel.amount <= max_amount)
+        return query.all()
