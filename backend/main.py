@@ -16,3 +16,6 @@ app.include_router(expense_router)
 def root():
     return {"message": "Expense Tracker API działa!"}
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.main:app", host="127.0.0.1", port=8000, reload=True)
