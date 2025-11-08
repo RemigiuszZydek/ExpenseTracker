@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, Nullable, String, DateTime, Date, Float, func
 from ..database import Base
+
+#  SQLalchemy model for "income" table
 class IncomeModel(Base):
     __tablename__ = "income"
 
