@@ -2,8 +2,7 @@ from datetime import date
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from backend.database.database import engine, Base, SessionLocal, get_db_session
-from backend.database.models.expense_model import ExpenseModel
+from backend.database.database import  get_db_session
 from backend.database.schemas.expense_schema import ExpenseCreate, ExpenseRead
 from backend.services.expense_service import ExpenseService
 
