@@ -19,6 +19,9 @@ class ExpenseService:
     def get_all_expenses(self) -> list[ExpenseModel]:
         return self.db.query(ExpenseModel).all()
     
+    def get_expense(self, expense_id: int) -> ExpenseModel:
+        return self.db.query(ExpenseModel).filter(ExpenseModel.id == expense_id).first()
+    
     def delete_expense(self, expense_id: int) -> ExpenseModel:
         expense = self.db.query(ExpenseModel).filter(ExpenseModel.id == expense_id).first()
         if not expense:

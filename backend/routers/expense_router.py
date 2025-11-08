@@ -22,9 +22,14 @@ def create_expense(expense: ExpenseCreate, db: Session=Depends(get_db_session)):
     return expense_service.create_expense(expense)
 
 @router.get("/",response_model=list[ExpenseRead])
-def get_expense(db: Session=Depends(get_db_session)):
+def get_expenses(db: Session=Depends(get_db_session)):
     expense_service = ExpenseService(db)
     return expense_service.get_all_expenses()
+
+@router.get("/{expnese_id}", response_model=ExpenseRead)
+def get_expense(expense_id: int, db: Session=Depends(get_db_session)):
+    expense_service = ExpenseService(db)
+    return expense_service.get_expense(expense_id)
 
 @router.delete("/{expense_id}", response_model=ExpenseRead)
 def delete_expense(expense_id: int, db: Session=Depends(get_db_session)):
