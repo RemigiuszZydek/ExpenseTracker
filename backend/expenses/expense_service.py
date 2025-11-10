@@ -2,8 +2,8 @@ from typing import Optional
 from datetime import date
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from backend.database.models.expense_model import ExpenseModel
-from backend.database.schemas.expense_schema import ExpenseCreate
+from .expense_model import ExpenseModel
+from .expense_schema import ExpenseCreate
 
 class ExpenseService:
     def __init__(self, db : Session):

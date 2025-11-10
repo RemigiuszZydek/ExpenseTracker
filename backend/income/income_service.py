@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from ExpenseTracker.backend.database.models.income_model import IncomeModel
-from ExpenseTracker.backend.database.schemas.income_schema import IncomeCreate
+from .income_model import IncomeModel
+from .income_schema import IncomeCreate
 
 
 class IncomeService:

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from backend.database.database import Base, engine, init_db
-from backend.database.models.expense_model import ExpenseModel
-from backend.routers.expense_router import router as expense_router
+from backend.expenses.expense_model import ExpenseModel
+from backend.expenses.expense_router import router as expense_router
 import os
 
 app = FastAPI(title="ExpenseTracker")
