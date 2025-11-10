@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from ExpenseTracker.backend.database.database import get_db_session
-from ExpenseTracker.backend.database.models.income_model import IncomeModel
-from ExpenseTracker.backend.database.schemas.income_schema import IncomeCreate, IncomeRead, IncomeSchema
-from ExpenseTracker.backend.services import income_service
-from ExpenseTracker.backend.services.income_service import IncomeService
+from backend.database.database import get_db_session
+from .income_model import IncomeModel
+from .income_schema import IncomeCreate, IncomeRead, IncomeSchema
+from .income_service import IncomeService
 
 
 

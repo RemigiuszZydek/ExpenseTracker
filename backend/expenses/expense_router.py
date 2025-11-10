@@ -3,8 +3,8 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from backend.database.database import  get_db_session
-from backend.database.schemas.expense_schema import ExpenseCreate, ExpenseRead
-from backend.services.expense_service import ExpenseService
+from .expense_schema import ExpenseCreate, ExpenseRead
+from .expense_service import ExpenseService
 
 # Create a new APIRouter instance with endpoint prefix /expenses
 router = APIRouter(

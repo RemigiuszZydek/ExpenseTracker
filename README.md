@@ -32,3 +32,6 @@ source venv/bin/activate  # Linux/Mac
    ```bash
      uvicorn backend.main:app --reload
    ```
+
+curl -X POST http://127.0.0.1:8000/expenses/ -H "Content-Type: application/json" -d "{\"title\": \"Sklep\", \"amount\": 500, \"category\": \"Jedzenie\", \"date\": \"2025-11-06\"}"
+
