@@ -59,3 +59,39 @@ def test_update_expense(db_session):
     assert updated.title == "D-updated"
     assert updated.amount == 50
     assert updated.date == date(2025,11,17)
+
+def test_delete_expense(db_session):
+    service = ExpenseService(db_session)
+    expense = expense= service.create_expense(ExpenseCreate(title="D", amount=60, category="Other", date=date(2025,11,18)))
+
+    deleted = service.delete_expense(expense.id)
+    assert deleted.id == expense.id
+    assert service.get_expense(expense.id) is None
+
+def test_get_filtered_expenses(db_session):
+    service = ExpenseService(db_session)
+    service.create_expense(ExpenseCreate(title="F", amount=10, category="Food", date=date(2025,11,19)))
+    service.create_expense(ExpenseCreate(title="G", amount=50, category="Bills", date=date(2025,11,20)))
+    service.create_expense(ExpenseCreate(title="H", amount=30, category="Food", date=date(2025,11,21)))
+
+    filtered = service.get_filtered_expenses(category="Food")
+    assert len(filtered) == 2
+    
+    filtered = service.get_filtered_expenses(min_amount=20)
+    assert len(filtered) == 2
+
+    filtered = service.get_filtered_expenses(start_date=date(2025,11,20), end_date=date(2025,11,21))
+    assert len(filtered) == 2
+
+def test_get_stats(db_session):
+    service = ExpenseService(db_session)
+    service.create_expense(ExpenseCreate(title="I", amount=10, category="Food", date=date(2025,11,22)))
+    service.create_expense(ExpenseCreate(title="J", amount=20, category="Food", date=date(2025,11,23)))
+    service.create_expense(ExpenseCreate(title="K", amount=30, category="Bills", date=date(2025,11,24)))
+
+
+    stats = service.get_stats()
+    assert stats["total"] == 60
+    assert stats["by_category"]["Food"] == 30
+    assert stats["by_category"]["Bills"] == 30
+    assert stats["average_per_day"] > 0
