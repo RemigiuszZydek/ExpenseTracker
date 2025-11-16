@@ -34,6 +34,7 @@ def db_session():
         yield session
     finally:
         session.close()
+    
         
 @pytest.fixture
 def client():
