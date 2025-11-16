@@ -1,3 +1,4 @@
+from math import exp
 from backend.expenses.expense_service import ExpenseService
 from backend.expenses.expense_schema import ExpenseCreate
 from backend.expenses.expense_model import ExpenseModel
@@ -39,3 +40,22 @@ def test_get_all_expenses(db_session):
     assert "A" in titles
     assert "B" in titles
 
+def test_get_expense(db_session):
+    service = ExpenseService(db_session)
+    expense = service.create_expense(ExpenseCreate(title="C", amount=30, category="Games", date=date(2025,11,16)))
+
+    fetched = service.get_expense(expense.id)
+    assert fetched.id == expense.id
+    assert fetched.title == "C"
+
+def test_update_expense(db_session):
+    service = ExpenseService(db_session)
+    expense= service.create_expense(ExpenseCreate(title="D", amount=40, category="Other", date=date(2025,11,16)))
+
+    updated = service.update_expense(
+        expense.id,
+        ExpenseCreate(title="D-updated", amount=50, category="Other", date=date(2025,11,17))
+    )
+    assert updated.title == "D-updated"
+    assert updated.amount == 50
+    assert updated.date == date(2025,11,17)
