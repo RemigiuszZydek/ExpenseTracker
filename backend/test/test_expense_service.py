@@ -27,3 +27,15 @@ def test_add_expense(db_session):
     assert saved.title == "Test service expense"
 
 
+def test_get_all_expenses(db_session):
+    service = ExpenseService(db_session)
+
+    service.create_expense(ExpenseCreate(title="A", amount=10, category="Food", date=date(2025,11,14)))
+    service.create_expense(ExpenseCreate(title="B", amount=20, category="Bills", date=date(2025,11,15)))
+
+    all_expenses = service.get_all_expenses()
+    assert len(all_expenses) == 2
+    titles = [e.title for e in all_expenses]
+    assert "A" in titles
+    assert "B" in titles
+
