@@ -16,7 +16,7 @@ def test_add_income(db_session):
     assert isinstance(new_income, IncomeModel)
     assert new_income.id is not None
     assert new_income.title == "Test income"
-    assert new_income.amount == 500
+    assert new_income.amount == 100
     assert str(new_income.date) == "2025-11-14"
 
     saved = db_session.query(IncomeModel).order_by(IncomeModel.id.desc()).first()
@@ -35,9 +35,9 @@ def test_get_all_incomes(db_session):
     assert "A" in titles
     assert "B" in titles
 
-def test_get_expense(db_session):
+def test_get_income(db_session):
     service = IncomeService(db_session)
-    income = service.create_income(IncomeCreate(title="C", amout=70, date=date(2025,11,17)))
+    income = service.create_income(IncomeCreate(title="C", amount=70, date=date(2025,11,17)))
 
     fetched = service.get_income(income.id)
     assert fetched.id == income.id
@@ -66,9 +66,9 @@ def test_delete_expense(db_session):
 
 def test_get_average_income(db_session):
     service = IncomeService(db_session)
-    service.create_expense(IncomeCreate(title="I", amount=10,  date=date(2025,11,22)))
-    service.create_expense(IncomeCreate(title="J", amount=20,  date=date(2025,11,23)))
-    service.create_expense(IncomeCreate(title="K", amount=30,  date=date(2025,11,24)))
+    service.create_income(IncomeCreate(title="I", amount=10,  date=date(2025,11,22)))
+    service.create_income(IncomeCreate(title="J", amount=20,  date=date(2025,11,23)))
+    service.create_income(IncomeCreate(title="K", amount=30,  date=date(2025,11,24)))
 
     avg = service.get_average_income()
 

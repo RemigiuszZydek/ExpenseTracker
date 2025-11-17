@@ -6,7 +6,7 @@ from datetime import date, datetime
 # - Used for serializing data sent to clients (GET)
 
 class IncomeSchema(BaseModel):
-    tittle: str
+    title: str
     amount: float
     date: date
 
