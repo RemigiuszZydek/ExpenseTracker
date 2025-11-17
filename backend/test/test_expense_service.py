@@ -1,4 +1,3 @@
-from math import exp
 from backend.expenses.expense_service import ExpenseService
 from backend.expenses.expense_schema import ExpenseCreate
 from backend.expenses.expense_model import ExpenseModel
@@ -62,7 +61,7 @@ def test_update_expense(db_session):
 
 def test_delete_expense(db_session):
     service = ExpenseService(db_session)
-    expense = expense= service.create_expense(ExpenseCreate(title="D", amount=60, category="Other", date=date(2025,11,18)))
+    expense = service.create_expense(ExpenseCreate(title="D", amount=60, category="Other", date=date(2025,11,18)))
 
     deleted = service.delete_expense(expense.id)
     assert deleted.id == expense.id
