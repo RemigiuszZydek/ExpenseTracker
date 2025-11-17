@@ -40,5 +40,5 @@ class IncomeService:
         return income
     
     def get_average_income(self) -> float:
-        avg_income = self.db.query(func.avg(IncomeModel)).scalar()
+        avg_income = self.db.query(func.avg(IncomeModel.amount)).scalar()
         return avg_income or 0.0
