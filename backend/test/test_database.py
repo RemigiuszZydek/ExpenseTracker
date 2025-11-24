@@ -17,3 +17,5 @@ def test_create_and_query_expense_in_db(db_session):
     assert result.title == "Test expense"
     assert result.amount == 100.5
     assert result.category == "Test"
+
+    
