@@ -6,3 +6,15 @@ export async function getAllExpenses() {
 	const res = await fetch(expenses_url);
 	return handleResponse(res);
 }
+
+export async function addExepense(data) {
+	const res = await fetch(expenses_url, {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json",
+		},
+		body: JSON.stringify(data),
+	});
+
+	return handleResponse(res);
+}
