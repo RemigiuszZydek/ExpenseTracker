@@ -24,39 +24,40 @@ export default function ExpenseList() {
 	if (error) return <div>Bład: {error}</div>;
 
 	return (
-		<div className="flex justify-center items-start min-w-screen bg-gray-100 p-6">
-			<div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6">
-				<h2 className="text-3xl font-bold mb-6 text-center">Lista wydatków</h2>
+		<div className="flex justify-center mt-10">
+			<div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl p-8">
+				<h2 className="text-4xl font-bold mb-8 text-center text-blue-600">
+					Lista wydatków
+				</h2>
 
-				<div className="overflow-x-auto">
-					<table className="min-w-full border border-gray-200 rounded-lg">
-						<thead className="bg-gray-200">
+				<div className="overflow-hidden rounded-xl border border-gray-200">
+					<table className="min-w-full">
+						<thead className="bg-blue-600 text-white">
 							<tr>
-								<th className="text-left py-3 px-6 text-lg font-semibold">
-									Tytuł
-								</th>
-								<th className="text-left py-3 px-6 text-lg font-semibold">
-									Data
-								</th>
-								<th className="text-left py-3 px-6 text-lg font-semibold">
-									Kategoria
-								</th>
-								<th className="text-right py-3 px-6 text-lg font-semibold">
-									Kwota
-								</th>
+								<th className="py-4 px-6 text-left font-semibold">Tytuł</th>
+								<th className="py-4 px-6 text-left font-semibold">Data</th>
+								<th className="py-4 px-6 text-left font-semibold">Kategoria</th>
+								<th className="py-4 px-6 text-right font-semibold">Kwota</th>
+								<th className="py-4 px-6 text-center font-semibold">Akcje</th>
 							</tr>
 						</thead>
-						<tbody>
+
+						<tbody className="divide-y divide-gray-200">
 							{expenses.map((exp) => (
-								<tr
-									key={exp.id}
-									className="hover:bg-blue-50 transition-colors duration-200"
-								>
-									<td className="py-4 px-6 text-lg">{exp.title}</td>
-									<td className="py-4 px-6 text-lg">{exp.date}</td>
-									<td className="py-4 px-6 text-lg">{exp.category}</td>
-									<td className="py-4 px-6 text-lg text-right font-bold">
-										{exp.amount} zł
+								<tr key={exp.id} className="hover:bg-blue-50 transition-all">
+									<td className="py-4 px-6 text-gray-800 font-medium">
+										{exp.title}
+									</td>
+									<td className="py-4 px-6 text-gray-600">
+										{new Date(exp.date).toLocaleDateString()}
+									</td>
+									<td className="py-4 px-6">{exp.category}</td>
+									<td className="py-4 px-6 text-right font-bold text-green-600">
+										{exp.amount.toFixed(2)} zł
+									</td>
+									<td className="py-4 px-6 text-center flex justify-center gap-4">
+										<button className="text-blue-600 hover:scale-110 transition"></button>
+										<button className="text-red-600 hover:scale-110 transition"></button>
 									</td>
 								</tr>
 							))}
