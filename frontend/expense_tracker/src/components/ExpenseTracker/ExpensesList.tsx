@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllExpenses } from "../../services/ExpenseTracker/expenses";
 
-export default function ExpenseList() {
+export default function ExpenseList({ reload }) {
 	const [expenses, setExpenses] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function ExpenseList() {
 			}
 		}
 		loadExpenses();
-	}, []);
+	}, [reload]);
 
 	if (loading) return <div>...Ładowanie</div>;
 	if (error) return <div>Bład: {error}</div>;
