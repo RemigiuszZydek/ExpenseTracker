@@ -40,16 +40,18 @@ export default function AddExpenseForm({ onAdded }) {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className="bg-white shadow-lg rounded-xl p-6 mb-8 w-full max-w-3xl mx-auto"
+			className="bg-gray-800 shadow-lg rounded-xl p-6 mb-8 w-full max-w-3xl mx-auto"
 		>
-			<h3 className="text-2xl font-bold mb-4 text-center">Dodaj wydatek</h3>
+			<h3 className="text-2xl font-bold mb-4 text-center text-orange-500">
+				Dodaj wydatek
+			</h3>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<input
 					type="text"
 					name="title"
 					placeholder="Tytuł"
-					className="border p-3 rounded-lg"
+					className="p-3 rounded-lg border border-gray-600 bg-gray-700 text-gray-100"
 					value={form.title}
 					onChange={handleChange}
 					required
@@ -58,7 +60,7 @@ export default function AddExpenseForm({ onAdded }) {
 					type="number"
 					name="amount"
 					placeholder="Kwota"
-					className="border p-3 rounded-lg"
+					className="p-3 rounded-lg border border-gray-600 bg-gray-700 text-gray-100"
 					value={form.amount}
 					onChange={handleChange}
 					step="0.01"
@@ -68,7 +70,7 @@ export default function AddExpenseForm({ onAdded }) {
 					type="text"
 					name="category"
 					placeholder="Kategoria"
-					className="border p-3 rounded-lg"
+					className="p-3 rounded-lg border border-gray-600 bg-gray-700 text-gray-100"
 					value={form.category}
 					onChange={handleChange}
 					required
@@ -76,7 +78,7 @@ export default function AddExpenseForm({ onAdded }) {
 				<input
 					type="date"
 					name="date"
-					className="border p-3 rounded-lg"
+					className="p-3 rounded-lg border border-gray-600 bg-gray-700 text-gray-100"
 					value={form.date}
 					onChange={handleChange}
 					required
@@ -84,13 +86,13 @@ export default function AddExpenseForm({ onAdded }) {
 			</div>
 
 			{error && (
-				<p className="text-red-600 mt-3 text-center text-sm">{error}</p>
+				<p className="text-red-500 mt-3 text-center text-sm">{error}</p>
 			)}
 
 			<button
 				type="submit"
 				disabled={loading}
-				className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg mt-6 transition"
+				className="w-full bg-orange-600 hover:bg-orange-800 text-white font-semibold py-3 rounded-lg mt-6 transition"
 			>
 				{loading ? "Dodawanie..." : "Dodaj wydatek"}
 			</button>
