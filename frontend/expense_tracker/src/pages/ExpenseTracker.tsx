@@ -10,7 +10,7 @@ export default function ExpenseTracker() {
 				Expense Tracker
 			</h1>
 			<AddExpenseForm onAdded={() => setReload(!reload)} />
-			<ExpenseList />
+			<ExpenseList reload={reload} />
 		</div>
 	);
 }
