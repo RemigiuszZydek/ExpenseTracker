@@ -1,4 +1,4 @@
-import { API_URL, handleResponse } from "../api";
+import { API_URL, handleResponse, buildQuery } from "../api";
 
 const expenses_url = `${API_URL}/expenses/`;
 
@@ -32,5 +32,22 @@ export async function addExepense(data) {
 		body: JSON.stringify(data),
 	});
 
+	return handleResponse(res);
+}
+
+export async function statsExpense(start_date, end_date) {
+	const params = new URLSearchParams();
+
+	// dodawaj tylko jeśli jest niepusty string
+	if (start_date) params.append("start_date", start_date);
+	if (end_date) params.append("end_date", end_date);
+
+	// jeżeli params jest pusty, nie dodawaj '?'
+	const queryString = params.toString();
+	const url = queryString
+		? `${expenses_url}stats?${queryString}`
+		: `${expenses_url}stats`;
+
+	const res = await fetch(url);
 	return handleResponse(res);
 }

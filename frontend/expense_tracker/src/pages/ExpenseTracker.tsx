@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddExpenseForm from "../components/ExpenseTracker/AddExpense";
 import ExpenseList from "../components/ExpenseTracker/ExpensesList";
+import ExpenseStats from "../components/ExpenseTracker/ExpenseStats";
 
 export default function ExpenseTracker() {
 	const [reload, setReload] = useState(false);
@@ -10,6 +11,7 @@ export default function ExpenseTracker() {
 				Expense Tracker
 			</h1>
 			<AddExpenseForm onAdded={() => setReload(!reload)} />
+			<ExpenseStats reload={reload} />
 			<ExpenseList reload={reload} setReload={setReload} />
 		</div>
 	);
