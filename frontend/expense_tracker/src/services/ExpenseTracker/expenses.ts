@@ -35,7 +35,7 @@ export async function addExepense(data) {
 	return handleResponse(res);
 }
 
-export async function statsExpense(start_date, end_date) {
+export async function statsExpense(start_date?, end_date?) {
 	const params = new URLSearchParams();
 
 	// dodawaj tylko jeśli jest niepusty string
