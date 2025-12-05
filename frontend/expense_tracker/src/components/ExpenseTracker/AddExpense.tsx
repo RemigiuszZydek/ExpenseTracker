@@ -24,7 +24,7 @@ export default function AddExpenseForm({ onAdded }) {
 		try {
 			const data = {
 				...form,
-				amoun: parseFloat(form.amount),
+				amount: parseFloat(form.amount),
 			};
 			const result = await addExepense(data);
 

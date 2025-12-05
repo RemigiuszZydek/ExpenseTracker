@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAllExpenses } from "../../services/ExpenseTracker/expenses";
+import DeleteExpenseButton from "./DeleteExpenseButton";
 
-export default function ExpenseList({ reload }) {
+export default function ExpenseList({ reload, setReload }) {
 	const [expenses, setExpenses] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -10,6 +11,7 @@ export default function ExpenseList({ reload }) {
 		async function loadExpenses() {
 			try {
 				const data = await getAllExpenses();
+				console.log(data);
 				setExpenses(data);
 			} catch (error) {
 				setError(error.message);
@@ -60,9 +62,10 @@ export default function ExpenseList({ reload }) {
 										<button className="text-blue-400 hover:text-blue-300 transition transform hover:scale-110">
 											✏
 										</button>
-										<button className="text-red-500 hover:text-red-400 transition transform hover:scale-110">
-											❌
-										</button>
+										<DeleteExpenseButton
+											id={exp.id}
+											onDelete={() => setReload((prev) => !prev)}
+										/>
 									</td>
 								</tr>
 							))}
