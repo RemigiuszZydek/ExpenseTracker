@@ -1,10 +1,11 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from backend.database.database import  get_db_session
 from .expense_schema import ExpenseCreate, ExpenseRead
 from .expense_service import ExpenseService
+
 
 # Create a new APIRouter instance with endpoint prefix /expenses
 router = APIRouter(
@@ -16,6 +17,16 @@ router = APIRouter(
 # - Accepts data validated with ExpenseCreate schema
 # - Returns data serialized with ExpenseRead schema
 
+@router.get("/stats")
+def get_expense_stats(
+    start_date: Optional[date] = Query(None),
+    end_date: Optional[date] = Query(None),
+    db: Session = Depends(get_db_session)
+):
+    expense_service = ExpenseService(db)
+    stats = expense_service.get_stats(start_date=start_date, end_date=end_date)
+    return stats
+
 @router.post("/",response_model=ExpenseRead)
 def create_expense(expense: ExpenseCreate, db: Session=Depends(get_db_session)):
     expense_service = ExpenseService(db)
@@ -26,7 +37,7 @@ def get_expenses(db: Session=Depends(get_db_session)):
     expense_service = ExpenseService(db)
     return expense_service.get_all_expenses()
 
-@router.get("/{expnese_id}", response_model=ExpenseRead)
+@router.get("/{expense_id}", response_model=ExpenseRead)
 def get_expense(expense_id: int, db: Session=Depends(get_db_session)):
     expense_service = ExpenseService(db)
     return expense_service.get_expense(expense_id)
@@ -59,11 +70,4 @@ def get_filtered_expenses(
         category=category
     )
 
-@router.get("/stats")
-def get_expense_stats(
-    start_date: Optional[date] = Query(None),
-    end_date: Optional[date] = Query(None),
-    db: Session = Depends(get_db_session)
-):
-    expense_service = ExpenseService(db)
-    return expense_service.get_stats(start_date,end_date)
+

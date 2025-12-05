@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import date, datetime
+from typing import Optional, Dict
 
 # Pydantic schemas for expenses.
 # - Used for validating incoming data (POST)
