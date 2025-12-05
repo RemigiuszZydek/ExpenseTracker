@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { getAllExpenses } from "../../services/ExpenseTracker/expenses";
 import DeleteExpenseButton from "./DeleteExpenseButton";
+import EditExpenseModal from "./EditExpenseModal";
 
 export default function ExpenseList({ reload, setReload }) {
 	const [expenses, setExpenses] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const [editingExpense, setEditingExpense] = useState(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		async function loadExpenses() {
@@ -59,7 +62,13 @@ export default function ExpenseList({ reload, setReload }) {
 										{exp.amount.toFixed(2)} zł
 									</td>
 									<td className="py-4 px-6 text-center flex justify-center gap-4">
-										<button className="text-blue-400 hover:text-blue-300 transition transform hover:scale-110">
+										<button
+											className="text-blue-400 hover:text-blue-300 transition transform hover:scale-110"
+											onClick={() => {
+												setEditingExpense(exp);
+												setIsModalOpen(true);
+											}}
+										>
 											✏
 										</button>
 										<DeleteExpenseButton
@@ -72,6 +81,13 @@ export default function ExpenseList({ reload, setReload }) {
 						</tbody>
 					</table>
 				</div>
+
+				<EditExpenseModal
+					expense={editingExpense}
+					isOpen={isModalOpen}
+					onClose={() => setIsModalOpen(false)}
+					onUpdated={() => setReload((prev) => !prev)}
+				/>
 			</div>
 		</div>
 	);
