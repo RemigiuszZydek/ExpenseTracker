@@ -7,6 +7,13 @@ export async function getAllExpenses() {
 	return handleResponse(res);
 }
 
+export async function deleteExpense(id) {
+	const res = await fetch(`${expenses_url}${id}`, {
+		method: "DELETE",
+	});
+	return handleResponse(res);
+}
+
 export async function addExepense(data) {
 	const res = await fetch(expenses_url, {
 		method: "POST",
