@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { statsExpense } from "../../services/ExpenseTracker/expenses";
+import { statsExpenseMonthly } from "../../services/ExpenseTracker/expenses";
 
 export default function ExpenseStats({ reload }) {
 	const [stats, setStats] = useState(null);
@@ -11,7 +11,7 @@ export default function ExpenseStats({ reload }) {
 			setLoading(true);
 			setError("");
 			try {
-				const data = await statsExpense();
+				const data = await statsExpenseMonthly();
 				setStats(data);
 			} catch (err) {
 				setError(err.message);
@@ -42,6 +42,10 @@ export default function ExpenseStats({ reload }) {
 			<h3 className="text-xl font-bold text-orange-400 mb-4">
 				Statystyki wydatków
 			</h3>
+
+			<h2 className="text-lg font-semibold text-orange-300 mb-4">
+				Ten miesiąc
+			</h2>
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 				<div className="p-4 bg-gray-700 rounded">

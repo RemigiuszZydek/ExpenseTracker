@@ -51,3 +51,8 @@ export async function statsExpense(start_date?, end_date?) {
 	const res = await fetch(url);
 	return handleResponse(res);
 }
+
+export async function statsExpenseMonthly() {
+	const res = await fetch(`${expenses_url}stats_monthly`);
+	return handleResponse(res);
+}

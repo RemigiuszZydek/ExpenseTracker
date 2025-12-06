@@ -27,6 +27,12 @@ def get_expense_stats(
     stats = expense_service.get_stats(start_date=start_date, end_date=end_date)
     return stats
 
+@router.get("/stats_monthly")
+def get_expense_stats_monthly(db: Session = Depends(get_db_session)):
+    expense_service = ExpenseService(db)
+    stats = expense_service.get_stats_monthly()
+    return stats
+
 @router.post("/",response_model=ExpenseRead)
 def create_expense(expense: ExpenseCreate, db: Session=Depends(get_db_session)):
     expense_service = ExpenseService(db)

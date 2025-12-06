@@ -1,4 +1,5 @@
 from typing import Optional
+from calendar import monthrange
 from datetime import date
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -85,6 +86,38 @@ class ExpenseService:
 
         by_category_query = (
             self.db.query(ExpenseModel.category, func.sum(ExpenseModel.amount))
+            .group_by(ExpenseModel.category)
+            .all()
+        )
+        by_category = {cat: float(amount) for cat, amount in by_category_query}
+
+        return {
+            "total": float(total),
+            "average_per_day": round(average_per_day, 2),
+            "by_category": by_category
+        }
+    
+    def get_stats_monthly(self):
+        """Returns sum, average by categories for the current month"""
+
+        today = date.today()
+        start_date = date(today.year, today.month, 1)
+        last_day = monthrange(today.year, today.month)[1]
+        end_date = date(today.year, today.month, last_day)
+
+        query = (
+            self.db.query(ExpenseModel)
+            .filter(ExpenseModel.date >= start_date)
+            .filter(ExpenseModel.date <= end_date)
+        )
+
+        total = query.with_entities(func.sum(ExpenseModel.amount)).scalar() or 0.0
+
+        days = (end_date - start_date).days + 1
+        average_per_day = total / days if days > 0 else 0
+
+        by_category_query = (
+            query.with_entities(ExpenseModel.category, func.sum(ExpenseModel.amount))
             .group_by(ExpenseModel.category)
             .all()
         )
